@@ -29,6 +29,15 @@ Base de données
 
 Application mobile React Native connectée à une API Node.js avec une base PostgreSQL.
 
+## Aperçu de l'application
+
+![Connexion](screenshots/login.png)
+![Inscription](screenshots/register.png)
+![Calendrier](screenshots/calendar.png)
+![Rendez-vous](screenshots/rendezvous.png)
+![Journal](screenshots/journal_write.png)
+![Historique Journal](screenshots/journal_history.png)
+
 ## Auteur
 
 Projet développé par Xebec
