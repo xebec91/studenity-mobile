@@ -18,7 +18,7 @@ Frontend
 - React Native
 - Expo Router
 
-Backend
+Backend : https://github.com/xebec91/studenity-backend
 - Node.js
 - Express
 
