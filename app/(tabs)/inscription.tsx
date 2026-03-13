@@ -1,6 +1,61 @@
-import { Image, ScrollView, Text, View } from "react-native";
+import { router } from "expo-router";
+import { useState } from "react";
+import {
+  Alert,
+  Image,
+  Pressable,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 
 export default function Inscription() {
+  const [prenom, setPrenom] = useState("");
+  const [nom, setNom] = useState("");
+  const [email, setEmail] = useState("");
+  const [motDePasse, setMotDePasse] = useState("");
+  const [pays, setPays] = useState("");
+  const [telephone, setTelephone] = useState("");
+
+  const handleRegister = async () => {
+    console.log("Tentative d'inscription...");
+
+    try {
+      const response = await fetch("http://192.168.1.182:5050/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prenom,
+          nom,
+          email,
+          password: motDePasse,
+          telephone,
+          pays,
+        }),
+      });
+
+      const data = await response.json();
+
+      console.log("Réponse API :", data);
+
+      if (response.ok) {
+        Alert.alert("Succès", "Compte créé avec succès");
+        router.push("/connexion");
+      } else {
+        Alert.alert("Erreur", data.message || "Impossible de créer le compte");
+      }
+    } catch (error) {
+      console.error("Erreur inscription :", error);
+      Alert.alert(
+        "Erreur réseau",
+        "Impossible de contacter le serveur backend",
+      );
+    }
+  };
+
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "#F7F9FC" }}>
       <View
@@ -48,16 +103,20 @@ export default function Inscription() {
           Prénom
         </Text>
 
-        <View
+        <TextInput
+          value={prenom}
+          onChangeText={setPrenom}
+          placeholder="Saisir votre prénom"
+          placeholderTextColor="#9CA3AF"
           style={{
             backgroundColor: "#FFFFFF",
             borderRadius: 12,
             paddingHorizontal: 14,
             paddingVertical: 20,
+            fontSize: 14,
+            color: "#1F2937",
           }}
-        >
-          <Text style={{ color: "#9CA3AF", fontSize: 14 }}>Romain</Text>
-        </View>
+        />
       </View>
 
       <View style={{ marginTop: 20, marginHorizontal: 20 }}>
@@ -73,16 +132,20 @@ export default function Inscription() {
           Nom
         </Text>
 
-        <View
+        <TextInput
+          value={nom}
+          onChangeText={setNom}
+          placeholder="Saisir votre nom"
+          placeholderTextColor="#9CA3AF"
           style={{
             backgroundColor: "#FFFFFF",
             borderRadius: 12,
             paddingHorizontal: 14,
             paddingVertical: 20,
+            fontSize: 14,
+            color: "#1F2937",
           }}
-        >
-          <Text style={{ color: "#9CA3AF", fontSize: 14 }}>Bernard</Text>
-        </View>
+        />
       </View>
 
       <View style={{ marginTop: 20, marginHorizontal: 20 }}>
@@ -98,18 +161,22 @@ export default function Inscription() {
           Email
         </Text>
 
-        <View
+        <TextInput
+          value={email}
+          onChangeText={setEmail}
+          placeholder="Saisir votre adresse email"
+          placeholderTextColor="#9CA3AF"
+          keyboardType="email-address"
+          autoCapitalize="none"
           style={{
             backgroundColor: "#FFFFFF",
             borderRadius: 12,
             paddingHorizontal: 14,
             paddingVertical: 20,
+            fontSize: 14,
+            color: "#1F2937",
           }}
-        >
-          <Text style={{ color: "#9CA3AF", fontSize: 14 }}>
-            romain.bernard@universite.fr
-          </Text>
-        </View>
+        />
       </View>
 
       <View style={{ marginTop: 20, marginHorizontal: 20 }}>
@@ -122,21 +189,24 @@ export default function Inscription() {
             fontWeight: "600",
           }}
         >
-          Mot de Passe
+          Mot de passe
         </Text>
 
-        <View
+        <TextInput
+          value={motDePasse}
+          onChangeText={setMotDePasse}
+          placeholder="Créer un mot de passe"
+          placeholderTextColor="#9CA3AF"
+          secureTextEntry
           style={{
             backgroundColor: "#FFFFFF",
             borderRadius: 12,
             paddingHorizontal: 14,
             paddingVertical: 20,
+            fontSize: 14,
+            color: "#1F2937",
           }}
-        >
-          <Text style={{ color: "#9CA3AF", fontSize: 14 }}>
-            Créer un mot de passe
-          </Text>
-        </View>
+        />
       </View>
 
       <View style={{ marginTop: 20, marginHorizontal: 20 }}>
@@ -152,18 +222,20 @@ export default function Inscription() {
           Pays
         </Text>
 
-        <View
+        <TextInput
+          value={pays}
+          onChangeText={setPays}
+          placeholder="Saisir votre pays"
+          placeholderTextColor="#9CA3AF"
           style={{
             backgroundColor: "#FFFFFF",
             borderRadius: 12,
             paddingHorizontal: 14,
             paddingVertical: 20,
+            fontSize: 14,
+            color: "#1F2937",
           }}
-        >
-          <Text style={{ color: "#9CA3AF", fontSize: 14 }}>
-            Sélectionner un pays
-          </Text>
-        </View>
+        />
       </View>
 
       <View style={{ marginTop: 20, marginHorizontal: 20 }}>
@@ -179,21 +251,25 @@ export default function Inscription() {
           Numéro de téléphone
         </Text>
 
-        <View
+        <TextInput
+          value={telephone}
+          onChangeText={setTelephone}
+          placeholder="Saisir votre numéro"
+          placeholderTextColor="#9CA3AF"
+          keyboardType="phone-pad"
           style={{
             backgroundColor: "#FFFFFF",
             borderRadius: 12,
             paddingHorizontal: 14,
             paddingVertical: 20,
+            fontSize: 14,
+            color: "#1F2937",
           }}
-        >
-          <Text style={{ color: "#9CA3AF", fontSize: 14 }}>
-            Saisir votre numéro de téléphone
-          </Text>
-        </View>
+        />
       </View>
 
-      <View
+      <Pressable
+        onPress={handleRegister}
         style={{
           backgroundColor: "#4F8EF7",
           marginHorizontal: 20,
@@ -204,30 +280,26 @@ export default function Inscription() {
           alignItems: "center",
         }}
       >
-        <Text
-          style={{
-            color: "#FFFFFF",
-            fontSize: 16,
-            fontWeight: "600",
-          }}
-        >
+        <Text style={{ color: "#FFFFFF", fontSize: 16, fontWeight: "600" }}>
           Créer un compte
         </Text>
-      </View>
+      </Pressable>
 
-      <Text
-        style={{
-          fontSize: 15,
-          color: "#6B7280",
-          textAlign: "center",
-          marginBottom: 20,
-        }}
-      >
-        Vous avez déjà un compte ?{" "}
-        <Text style={{ color: "#4F8EF7", fontWeight: "600" }}>
-          Se connecter
+      <Pressable onPress={() => router.push("/connexion")}>
+        <Text
+          style={{
+            fontSize: 15,
+            color: "#6B7280",
+            textAlign: "center",
+            marginBottom: 20,
+          }}
+        >
+          Vous avez déjà un compte ?{" "}
+          <Text style={{ color: "#4F8EF7", fontWeight: "600" }}>
+            Se connecter
+          </Text>
         </Text>
-      </Text>
+      </Pressable>
     </ScrollView>
   );
 }

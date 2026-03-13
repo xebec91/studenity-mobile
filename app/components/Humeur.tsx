@@ -1,6 +1,11 @@
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
-export default function Humeur() {
+type HumeurProps = {
+  humeur: string;
+  setHumeur: (humeur: string) => void;
+};
+
+export default function Humeur({ humeur, setHumeur }: HumeurProps) {
   return (
     <View
       style={{
@@ -39,9 +44,10 @@ export default function Humeur() {
           marginTop: 12,
         }}
       >
-        <View
+        <Pressable
+          onPress={() => setHumeur("fatigué")}
           style={{
-            backgroundColor: "#F3F4F6",
+            backgroundColor: humeur === "fatigué" ? "#DBEAFE" : "#F3F4F6",
             borderRadius: 12,
             height: 80,
             width: 58,
@@ -51,11 +57,12 @@ export default function Humeur() {
         >
           <Text style={{ fontSize: 28 }}>😴</Text>
           <Text style={{ fontSize: 10, marginTop: 4 }}>Fatigué</Text>
-        </View>
+        </Pressable>
 
-        <View
+        <Pressable
+          onPress={() => setHumeur("triste")}
           style={{
-            backgroundColor: "#F3F4F6",
+            backgroundColor: humeur === "triste" ? "#DBEAFE" : "#F3F4F6",
             borderRadius: 12,
             height: 80,
             width: 58,
@@ -65,11 +72,12 @@ export default function Humeur() {
         >
           <Text style={{ fontSize: 28 }}>😢</Text>
           <Text style={{ fontSize: 10, marginTop: 4 }}>Triste</Text>
-        </View>
+        </Pressable>
 
-        <View
+        <Pressable
+          onPress={() => setHumeur("confus")}
           style={{
-            backgroundColor: "#DBEAFE",
+            backgroundColor: humeur === "confus" ? "#DBEAFE" : "#F3F4F6",
             borderRadius: 12,
             height: 80,
             width: 58,
@@ -79,11 +87,12 @@ export default function Humeur() {
         >
           <Text style={{ fontSize: 28 }}>😕</Text>
           <Text style={{ fontSize: 10, marginTop: 4 }}>Confus</Text>
-        </View>
+        </Pressable>
 
-        <View
+        <Pressable
+          onPress={() => setHumeur("tranquille")}
           style={{
-            backgroundColor: "#F3F4F6",
+            backgroundColor: humeur === "tranquille" ? "#DBEAFE" : "#F3F4F6",
             borderRadius: 12,
             height: 80,
             width: 58,
@@ -93,11 +102,12 @@ export default function Humeur() {
         >
           <Text style={{ fontSize: 28 }}>😌</Text>
           <Text style={{ fontSize: 10, marginTop: 4 }}>Tranquille</Text>
-        </View>
+        </Pressable>
 
-        <View
+        <Pressable
+          onPress={() => setHumeur("heureux")}
           style={{
-            backgroundColor: "#F3F4F6",
+            backgroundColor: humeur === "heureux" ? "#DBEAFE" : "#F3F4F6",
             borderRadius: 12,
             height: 80,
             width: 58,
@@ -107,7 +117,7 @@ export default function Humeur() {
         >
           <Text style={{ fontSize: 28 }}>😁</Text>
           <Text style={{ fontSize: 10, marginTop: 4 }}>Heureux</Text>
-        </View>
+        </Pressable>
       </View>
     </View>
   );

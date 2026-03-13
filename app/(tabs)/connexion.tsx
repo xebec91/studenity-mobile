@@ -1,6 +1,47 @@
-import { Image, ScrollView, Text, View } from "react-native";
+import { router } from "expo-router";
+import { useState } from "react";
+import {
+  Alert,
+  Image,
+  Pressable,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 
 export default function Connexion() {
+  const [email, setEmail] = useState("");
+  const [motDePasse, setMotDePasse] = useState("");
+
+  const handleLogin = async () => {
+    try {
+      const response = await fetch("http://192.168.1.182:5050/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password: motDePasse,
+        }),
+      });
+
+      const data = await response.json();
+      console.log("Réponse login :", data);
+
+      if (response.ok) {
+        Alert.alert("Succès", "Connexion réussie");
+        router.push("/");
+      } else {
+        Alert.alert("Erreur", data.message || "Connexion impossible");
+      }
+    } catch (error) {
+      console.error("Erreur connexion :", error);
+      Alert.alert("Erreur réseau", "Impossible de contacter le serveur");
+    }
+  };
+
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "#F7F9FC" }}>
       <View
@@ -48,18 +89,22 @@ export default function Connexion() {
           Email
         </Text>
 
-        <View
+        <TextInput
+          value={email}
+          onChangeText={setEmail}
+          placeholder="Saisir votre adresse email"
+          placeholderTextColor="#9CA3AF"
+          keyboardType="email-address"
+          autoCapitalize="none"
           style={{
             backgroundColor: "#FFFFFF",
             borderRadius: 12,
             paddingHorizontal: 14,
             paddingVertical: 20,
+            fontSize: 14,
+            color: "#1F2937",
           }}
-        >
-          <Text style={{ color: "#9CA3AF", fontSize: 14 }}>
-            Saisir votre adresse email
-          </Text>
-        </View>
+        />
       </View>
 
       <View style={{ marginTop: 20, marginHorizontal: 20 }}>
@@ -72,24 +117,28 @@ export default function Connexion() {
             fontWeight: "600",
           }}
         >
-          Mot de Passe
+          Mot de passe
         </Text>
 
-        <View
+        <TextInput
+          value={motDePasse}
+          onChangeText={setMotDePasse}
+          placeholder="Entrer votre mot de passe"
+          placeholderTextColor="#9CA3AF"
+          secureTextEntry
           style={{
             backgroundColor: "#FFFFFF",
             borderRadius: 12,
             paddingHorizontal: 14,
             paddingVertical: 20,
+            fontSize: 14,
+            color: "#1F2937",
           }}
-        >
-          <Text style={{ color: "#9CA3AF", fontSize: 14 }}>
-            Entrer votre mot de passe
-          </Text>
-        </View>
+        />
       </View>
 
-      <View
+      <Pressable
+        onPress={handleLogin}
         style={{
           backgroundColor: "#4F8EF7",
           marginHorizontal: 20,
@@ -109,20 +158,23 @@ export default function Connexion() {
         >
           Se connecter
         </Text>
-      </View>
+      </Pressable>
 
-      <Text
-        style={{
-          fontSize: 15,
-          color: "#6B7280",
-          textAlign: "center",
-        }}
-      >
-        Vous n'avez pas de compte ?{" "}
-        <Text style={{ color: "#4F8EF7", fontWeight: "600" }}>
-          Créer un compte
+      <Pressable onPress={() => router.push("/inscription")}>
+        <Text
+          style={{
+            fontSize: 15,
+            color: "#6B7280",
+            textAlign: "center",
+            marginBottom: 20,
+          }}
+        >
+          Vous n&apos;avez pas de compte ?{" "}
+          <Text style={{ color: "#4F8EF7", fontWeight: "600" }}>
+            Créer un compte
+          </Text>
         </Text>
-      </Text>
+      </Pressable>
     </ScrollView>
   );
 }
